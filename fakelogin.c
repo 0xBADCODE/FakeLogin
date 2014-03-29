@@ -12,23 +12,6 @@
 #define PORT 0xB822
 #define DNSPORT 0x3500
 
-void hexdump(unsigned char *data, unsigned int size)
-{
-	unsigned int i;
-	printf("\n");
-	for(i = 0; i < size; i++)
-	{
-		printf("%02x", data[i]);
-		if(size >= 16 && (i+1) % 2  == 0)
-			printf(" ");
-		if(size >= 32 && (i+1) % 16  == 0)
-			printf("\n");
-		if(size == 20 && (i+1) % 10  == 0)
-			printf("\n");
-	}
-	printf("(%d bytes)\n\n", size);
-}
-
 unsigned int sendPacket(char *data, char *login, char *password, unsigned int dns)
 {
 	char pkt[70];
@@ -57,8 +40,6 @@ unsigned int sendPacket(char *data, char *login, char *password, unsigned int dn
 		memset(&pkt + 13 + strlen(login), strlen(password), 1);
                 memcpy(pkt + 14 + strlen(login), password, strlen(password));
 		memcpy(pkt + 14 + strlen(login) + strlen(password), dns2, 16);
-
-		//hexdump(pkt, sizeof pkt); //debug
 	}
 
 	struct sockaddr_in serv_addr;
